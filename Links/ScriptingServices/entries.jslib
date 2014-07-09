@@ -1,6 +1,7 @@
 var systemLib = require('system');
 var ioLib = require('io');
 var entityLib = require('entity');
+var Autolinker = require('autolinker');
 
 // create entity by parsing JSON object from request body
 exports.createEntries = function() {
@@ -106,8 +107,8 @@ exports.readEntriesList = function(limit, offset, sort, desc) {
 function createEntity(resultSet, data) {
     var result = {};
 	result.entry_id = resultSet.getInt("ENTRY_ID");
-    result.value = resultSet.getString("VALUE");
-    result.description = resultSet.getString("DESCRIPTION");
+    result.value = Autolinker.link(resultSet.getString("VALUE"));
+    result.description = Autolinker.link(resultSet.getString("DESCRIPTION"));
     return result;
 };
 
@@ -115,6 +116,10 @@ function createEntity(resultSet, data) {
 exports.updateEntries = function() {
     var input = ioLib.read(request.getReader());
     var message = JSON.parse(input);
+    
+    message.value = Autolinker.link(message.value);
+    message.description = Autolinker.link(message.description);
+    
     var connection = datasource.getConnection();
     try {
         var sql = "UPDATE ENTRIES SET ";
