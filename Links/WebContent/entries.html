@@ -1,309 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Links">
-<meta name="author" content="Vicky">
-
-<title>Entries</title>
-
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
-    
-<link rel="stylesheet"
-    href="entries.css"/>
-    
-</head>
-
-<body>
-    <div class="navbar navbar-default navbar-fixed-top" role="header">
-        <form class="navbar-header">
-            <span class="navbar-brand"> Links </span>
-        </form>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Links">
+        <meta name="author" content="Vicky">
         
-        <form class="navbar-form navbar-right" role="navigation" style="margin-right: 0px;">
-            <div class="form-group" style="margin-right: 30px;">
-                <input type="text" class="form-control" placeholder="Search">
-            </div>
+        <link rel="stylesheet"
+        	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
             
-            <button type="submit" class="btn btn-primary btn-sm" style="margin-right: 10px;"> Relog </button>
-        </form>
-    </div>
-    
-	<div id="wrap" class="container" ng-app ng-controller="ManageController">
-		<div class="alert alert-danger" ng-show="errorMessage">
-			{{errorMessage}}</div>
+        <link rel="stylesheet" href="styles/links.css"/>
+            
+        <link rel="stylesheet" href="styles/login.css"/>
         
-        <div class="row" style="margin-bottom: 20px;">
-            <div class="btn-group col-xs-4">
-    			<input class="btn btn-default btn-sm" type="button" value="New"
-					ng-click="setOperation('new')"
-					ng-disabled="errorMessage || operation == 'update'">
-                    
-                <input
-					class="btn btn-default btn-sm" type="button" value="Edit"
-					ng-click="setOperation('update')"
-					ng-disabled="errorMessage || operation == 'new'">
-                    
-                <input
-					class="btn btn-default btn-sm" type="button" value="Delete"
-					ng-click="delete()"
-					ng-disabled="errorMessage || operation == 'new' || operation == 'update'">
-			</div>
-            
-			<div id="new-record-fields" class="container col-xs-5">
-				<div ng-show="operation == 'show'" class="row">
-                    <div class="col-xs-6">
-    					<input type="text" placeholder="value" class="form-control input-sm"
-    						ng-model="selectedEntry.value" readonly>
-                    </div>
-                    
-                    <div class="col-xs-6">
-    					<input type="text" placeholder="description" class="form-control input-sm"
-    						ng-model="selectedEntry.description" readonly>
-                    </div>
-				</div>
-				<div ng-show="operation == 'new'" class="row">
-                    <div class="col-xs-6">
-    					<input type="text" placeholder="value" class="form-control input-sm"
-    						ng-model="newEntry.value">
-                    </div>
-                    
-                    <div class="col-xs-6">
-					<input type="text" placeholder="description" class="form-control input-sm"
-						ng-model="newEntry.description">
-                    </div>
-				</div>
-                <div ng-show="operation == 'update'" class="row">
-                    <div class="col-xs-6">
-    					<input type="text" placeholder="value" class="form-control input-sm"
-    						ng-model="selectedEntry.value">
-                    </div>
-                    
-                    <div class="col-xs-6">
-    					<input type="text" placeholder="description" class="form-control input-sm"
-    						ng-model="selectedEntry.description">
-                    </div>
-				</div>
-            </div>
-            
-            <div class="btn-group col-xs-3">
-            <input class="btn btn-success btn-sm" type="button" value="Save" ng-show="operation == 'new' || operation == 'update'"
-            	ng-click="confirmAction()"> 
-                
-			<input class="btn btn-danger btn-sm" type="button" value="Cancel" ng-show="operation == 'new' || operation == 'update'"
-				ng-click="cancelAction()">
-            </div>
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        
+    </head>
+
+    <body ng-app="linksApp">
+        <div class="main" ng-view>
+        
         </div>
         
-		<table class="table table-condensed">
-			<thead>
-				<tr>
-					<th>value</th>
-					<th>description</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr class="selected-{{entry._selected_}}" ng-repeat="entry in data"
-					ng-click="showInfoForEntry(entry)">
-					<td style="width: 50%;">{{entry.value}}</td> 
-					<td style="width: 50%;">{{entry.description}}</td> 
-				</tr>
-			</tbody>
-		</table>
-	</div>
-    
-    <div class="footer">
-        <div class="container">
-            <p class="text-muted"> Copyright &copy #kopiraitenavolia </p>
+        <div class="footer">
+            <div class="container">
+                <p class="text-muted"> Copyright &copy #kopiraitenavolia </p>
+            </div>
         </div>
-    </div>
-
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular-resource.min.js"></script>
-    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-
-	<script type="text/javascript">
-		function ManageController($scope, $http){
-			var url = '/dirigible/js/Links/entries.js';
-			
-			$http.get(url)
-			.success(function(data){
-				$scope.data = data;
-			});
-			
-			$scope.selectedEntry;
-            $scope.operation = 'show';
-            $scope.newEntry = null;
-            $scope.errorMessage = null;
-			
-			$scope.showInfoForEntry = function(entry) {
-				if($scope.operation==='show'){
-					if($scope.selectedEntry === entry){
-						$scope.showEntry = false;
-						$scope.selectedEntry = null;
-						entry._selected_ = false;
-					}else{
-						for(var i = 0 ; i < $scope.data.length; i ++){
-							$scope.data[i]._selected_ = false;
-						}
-						entry._selected_ = true;
-						$scope.showEntry = true;
-						$scope.selectedEntry = entry;
-					}
-				}
-			}
-					
-			$scope.setOperation = function(operation){
-                switch(operation){
-                    case 'new':
-                      if($scope.operation != 'new'){
-                          $scope.operation = 'new';
-                      }else{
-                          $scope.operation = 'show';
-                      }
-                      
-                    changeFormState();
-                    break;
-                  case 'update':
-                    if($scope.operation != 'update'){
-                       if($scope.selectedEntry){
-                           $scope.operation = 'update';
-                           changeFormState();
-                       }else{
-                           alert("Please first select entry for updated");
-                           $scope.operation = 'show';
-                       }
-                    }else{
-                      $scope.operation = 'show';
-                    }
-                    break;
-                  case 'delete':
-                    if($scope.operation != 'delete'){
-                      $scope.operation = 'delete';
-                    }else{
-                      $scope.operation = 'show';
-                    }
-                    break;
-                  default:
-                    $scope.operation = 'show';
-                    break;
-                }
-            }
-                    
-            $scope.confirmAction = function(){
-                switch($scope.operation){
-                    case 'show':
-                        break;
-                    case 'new':
-                        newEntry($scope.newEntry);
-                        break;
-                    case 'update':
-                        updateEntry($scope.selectedEntry);
-                        break;
-                }
-                
-                changeFormState();
-            }
-
-            $scope.cancelAction = function(){
-                refreshData();
-                
-                changeFormState();
-            }
-
-           $scope.delete = function(){
-        	   if($scope.selectedEntry){
-                 	var confirmed = confirm('Do you realy want to delete the selected entry?');
-               	if(confirmed){
-                   	delete $scope.selectedEntry._selected_;
-                       deleteEntry($scope.selectedEntry);
-                       $scope.operation = 'show';
-               	}                    	
-               }else{
-                   alert('Please select row from the table.');
-               }
-           }
-                    
-			function newEntry(entry){
-				delete $scope.newEntry._selected_;
-				$http.post(url, entry)
-				.success(function(){
-					refreshData();
-					$scope.selectedEntry = null;
-                    $scope.operation = 'show';
-                    $scope.newEntry = null;
-                    $scope.errorMessage = null;
-				})
-				.error(function(response){
-					$scope.errorMessage = response.err.message;
-				});
-			}
-			
-			function updateEntry(entry){
-				delete $scope.selectedEntry._selected_;
-				$http.put(url, entry)
-				.success(function(){
-					refreshData();
-                    $scope.operation = 'show';
-                    $scope.errorMessage = null;
-				})
-				.error(function(response){
-					$scope.errorMessage = response.err.message;
-				});
-			}
-					
-			function deleteEntry(entry){
-				var primaryKey;
-				primaryKey = "entry_id";
-				var deleteUrl = url+"?"+primaryKey+"="+entry[primaryKey];
-				$http.delete(deleteUrl)
-				.success(function(){
-					refreshData();
-                    $scope.selectedEntry = null;
-					$scope.errorMessage = null;
-				})
-				.error(function(response){
-					$scope.errorMessage = response.err.message;
-				})
-			}
-                    
-			function refreshData(){
-				$http.get(url)
-				.success(function(data){
-					$scope.data = data;
-                	$scope.newEntry = null;
-                    $scope.selectedEntry = null;
-                    $scope.operation = 'show';
-                    $scope.errorMessage = null;
-				})
-				.error(function(response){
-					$scope.errorMessage = response.err.message;
-				});
-			}
-		}
+    
+    	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular.min.js"></script>
+    	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular-resource.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+        <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         
-        function changeFormState() {
-            newState = "";
-            
-            switch($('#new-record-fields').css('display')) {
-                case 'none':
-                    newState = 'block';
-                    break;
-                case 'block':
-                    newstate = 'none';
-                    break;
-                default:
-                    console.log('Input form display property has a bad value. ;c');
-                    return 0;
-            }
-            
-            $('#new-record-fields').css('display', newState);
-        }
+        <script>
+            var linksApp = angular.module('linksApp', ['ngRoute']);            
+        </script>
         
-	</script>
-</body>
+        <script src="scripts/routes.js"></script>
+    	<script src="scripts/ManageController.js"></script>
+        <script src="scripts/LoginController.js"></script>
+        <script src="scripts/helperMethods.js"></script>
+    </body>
 </html>

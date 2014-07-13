@@ -1,0 +1,96 @@
+<div class="navbar navbar-default navbar-fixed-top" role="header">
+    <form class="navbar-header">
+        <span class="navbar-brand"> Links </span>
+    </form>
+    
+    <form class="navbar-form navbar-right" role="navigation" style="margin-right: 0px;">
+        <div class="form-group" style="margin-right: 30px;">
+            <input type="text" class="form-control" placeholder="Search">
+        </div>
+        
+        <a href="#" class="btn btn-primary btn-sm" style="margin-right: 10px;"> Relog </a>
+    </form>
+</div>
+
+<div id="wrap" class="container">
+	<div class="alert alert-danger" ng-show="errorMessage">
+		{{errorMessage}}</div>
+    
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="btn-group col-xs-4">
+			<input class="btn btn-default btn-sm" type="button" value="New"
+				ng-click="setOperation('new')"
+				ng-disabled="errorMessage || operation == 'update'">
+                
+            <input
+				class="btn btn-default btn-sm" type="button" value="Edit"
+				ng-click="setOperation('update')"
+				ng-disabled="errorMessage || operation == 'new'">
+                
+            <input
+				class="btn btn-default btn-sm" type="button" value="Delete"
+				ng-click="delete()"
+				ng-disabled="errorMessage || operation == 'new' || operation == 'update'">
+		</div>
+        
+		<div id="new-record-fields" class="container col-xs-5">
+			<div ng-show="operation == 'show'" class="row">
+                <div class="col-xs-6">
+					<input type="text" placeholder="value" class="form-control input-sm"
+						ng-model="selectedEntry.value" readonly>
+                </div>
+                
+                <div class="col-xs-6">
+					<input type="text" placeholder="description" class="form-control input-sm"
+						ng-model="selectedEntry.description" readonly>
+                </div>
+			</div>
+			<div ng-show="operation == 'new'" class="row">
+                <div class="col-xs-6">
+					<input type="text" placeholder="value" class="form-control input-sm"
+						ng-model="newEntry.value">
+                </div>
+                
+                <div class="col-xs-6">
+				<input type="text" placeholder="description" class="form-control input-sm"
+					ng-model="newEntry.description">
+                </div>
+			</div>
+            <div ng-show="operation == 'update'" class="row">
+                <div class="col-xs-6">
+					<input type="text" placeholder="value" class="form-control input-sm"
+						ng-model="selectedEntry.value">
+                </div>
+                
+                <div class="col-xs-6">
+					<input type="text" placeholder="description" class="form-control input-sm"
+						ng-model="selectedEntry.description">
+                </div>
+			</div>
+        </div>
+        
+        <div class="btn-group col-xs-3">
+        <input class="btn btn-success btn-sm" type="button" value="Save" ng-show="operation == 'new' || operation == 'update'"
+        	ng-click="confirmAction()"> 
+            
+		<input class="btn btn-danger btn-sm" type="button" value="Cancel" ng-show="operation == 'new' || operation == 'update'"
+			ng-click="cancelAction()">
+        </div>
+    </div>
+    
+	<table class="table table-condensed">
+		<thead>
+			<tr>
+				<th>value</th>
+				<th>description</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="selected-{{entry._selected_}}" ng-repeat="entry in data"
+				ng-click="showInfoForEntry(entry)">
+				<td style="width: 50%;" ng-bind-html="entry.value"></td> 
+				<td style="width: 50%;" ng-bind-html="entry.description"></td> 
+			</tr>
+		</tbody>
+	</table>
+</div>

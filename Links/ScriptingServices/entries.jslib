@@ -1,7 +1,7 @@
 var systemLib = require('system');
 var ioLib = require('io');
 var entityLib = require('entity');
-var Autolinker = require('autolinker');
+var uralize = require('Links/uralize');
 
 // create entity by parsing JSON object from request body
 exports.createEntries = function() {
@@ -83,7 +83,11 @@ exports.readEntriesList = function(limit, offset, sort, desc) {
         }
         if (sort !== null && desc !== null) {
             sql += " DESC ";
+        } else {
+            if(sort !== null)
+                sql += " ASC ";    
         }
+        
         if (limit !== null && offset !== null) {
             sql += " " + db.createLimitAndOffset(limit, offset);
         }
@@ -107,8 +111,9 @@ exports.readEntriesList = function(limit, offset, sort, desc) {
 function createEntity(resultSet, data) {
     var result = {};
 	result.entry_id = resultSet.getInt("ENTRY_ID");
-    result.value = Autolinker.link(resultSet.getString("VALUE"));
-    result.description = Autolinker.link(resultSet.getString("DESCRIPTION"));
+    result.value = uralize.urlize(resultSet.getString("VALUE"));
+    result.description = uralize.urlize(resultSet.getString("DESCRIPTION"));
+    
     return result;
 };
 
@@ -117,8 +122,8 @@ exports.updateEntries = function() {
     var input = ioLib.read(request.getReader());
     var message = JSON.parse(input);
     
-    message.value = Autolinker.link(message.value);
-    message.description = Autolinker.link(message.description);
+    message.value = uralize.urlize(message.value);
+    message.description = uralize.urlize(message.description);
     
     var connection = datasource.getConnection();
     try {
@@ -245,6 +250,9 @@ exports.processEntries = function() {
 	var offset = xss.escapeSql(request.getParameter('offset'));
 	var desc = xss.escapeSql(request.getParameter('desc'));
 	
+    desc = 1;
+    sort = 'entry_id';
+    
 	if (limit === null) {
 		limit = 100;
 	}

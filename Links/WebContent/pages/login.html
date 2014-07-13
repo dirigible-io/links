@@ -1,0 +1,22 @@
+<div class="container">
+  <form class="form-signin" role="form">
+    <div class="page-header">
+        <h2 class="form-signin-heading">Log in</h2>
+        <small> Note: Even if you do not have an account, it will be created for you automatically on login </small>
+    </div>
+    <input type="text" class="form-control" placeholder="Name" id="name-field" autofocus>
+    <input type="text" class="form-control" placeholder="Password" id="pass-field">
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" value="remember-me" id="checkbox-remember"> Remember me
+      </label>
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" value="hide-password" id="checkbox-pass" onchange="changePassInputType();"> Hide password
+        </label>
+    </div>
+    
+    <button type="submit" class="btn btn-lg btn-primary btn-block" onclick="ensureLoginIsFilled();"> Sign in </a>
+  </form>
+</div>
