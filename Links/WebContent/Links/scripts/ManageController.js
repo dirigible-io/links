@@ -14,7 +14,7 @@ linksApp.controller('ManageController', ['$scope', '$http', '$sce', function($sc
     
     document.title = 'Entries';
     
-	var url = '/dirigible/js/Links/entries.js';
+	var url = '/dirigible/services/js/Links/entries.js';
 	
 	$http.get(url)
 	.success(function(data){

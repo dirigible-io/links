@@ -1,7 +1,7 @@
 var systemLib = require('system');
 var ioLib = require('io');
 var entityLib = require('entity');
-var uralize = require('Links/uralize');
+var uralize = require('Links/uralize_lib');
 
 // create entity by parsing JSON object from request body
 exports.createEntries = function() {
